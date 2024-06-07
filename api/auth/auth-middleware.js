@@ -42,8 +42,16 @@ next(err)
     "message": "Invalid credentials"
   }
 */
-function checkUsernameExists(req, res, next) {
-next()
+async function checkUsernameExists(req, res, next) {
+  try { 
+    const user =  await User.findBy({username: req.body.username})
+  if (user.length) next()
+  else next({status: 401, message: 'Invalid credentials'})  
+  }
+  catch (err) {
+next(err)
+  
+  }
 }
 
 /*
